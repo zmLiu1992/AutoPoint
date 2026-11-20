@@ -19,7 +19,7 @@
    // 發一則可操作的通知：點了就打開捷徑並把值丟進去
    $notification.post(
      "[StarCruise] 分數查詢完成",
-     "點擊這則通知以開啟捷徑，顯示完整結果",
+     '',
      result, {
        action: "open-url", // 點通知後執行「開網址」
        url, // 這個網址就是上面的 shortcuts://...
@@ -39,6 +39,10 @@
      const requestUrl = {
        url: 'https://sdr.scstarnavigator.com/rwcapp/customer/session',
 	   method: 'POST',
+      headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
        body: JSON.stringify({
 			id: uid,
 			pin: pw
@@ -121,7 +125,7 @@
          resolve(null);
 
        } else {
-         if (response.status === 200) {
+         if (response.status === 204) {
            try {
            
              resolve(null);
@@ -189,16 +193,16 @@
    if (userId != null && userPw != null) {
       console.log(`使用者ID :${userId}. `);
       
-	   const token = login(userId, userPw);
+	   const token = await login(userId, userPw);
 	   if (token != null) {
          
          console.log(`get token :${token}. `);
          
-			const point = getPoint(token);
+			const point = await getPoint(token);
 			if (point != null) {
              console.log(`CP點數 :${point}. `);
               
-			   const lastCP = parseFloat($persistentStore.read(LAST_POINT_KEY), 10);
+			   const lastCP = parseFloat($persistentStore.read(LAST_POINT_KEY));
 			   
             console.log(`CP 點數紀錄 :${lastCP}. `);
 			   if (lastCP != point) {
