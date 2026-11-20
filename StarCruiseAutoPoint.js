@@ -203,6 +203,8 @@
 				   quickDisplay(msg);
 				   console.log(`${msg}`);
 			   }
+            
+            logout(token);
 			}
 	   }
    }
