@@ -187,13 +187,20 @@
    const userPw = String($persistentStore.read(USERPW_KEY));
    
    if (userId != null && userPw != null) {
+      console.log(`使用者ID :${userId}. `);
+      
 	   const token = login(userId, userPw);
 	   if (token != null) {
+         
+         console.log(`get token :${token}. `);
+         
 			const point = getPoint(token);
 			if (point != null) {
-               
+             console.log(`CP點數 :${point}. `);
+              
 			   const lastCP = parseFloat($persistentStore.read(LAST_POINT_KEY), 10);
 			   
+            console.log(`CP 點數紀錄 :${lastCP}. `);
 			   if (lastCP != point) {
 				  $persistentStore.write(point, LAST_POINT_KEY); 
 				   
@@ -204,6 +211,7 @@
 				   console.log(`${msg}`);
 			   }
             
+            console.log(`登出`);
             logout(token);
 			}
 	   }
